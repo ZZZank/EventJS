@@ -1,4 +1,4 @@
-package zank.mods.eventsjs.mixin;
+package zank.mods.eventjs.mixin;
 
 import dev.latvian.kubejs.forge.BuiltinKubeJSForgePlugin;
 import dev.latvian.kubejs.forge.KubeJSForgeEventHandlerWrapper;
@@ -8,8 +8,8 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-import zank.mods.eventsjs.wrapper.ClassConvertible;
-import zank.mods.eventsjs.SidedNativeEvents;
+import zank.mods.eventjs.wrapper.ClassConvertible;
+import zank.mods.eventjs.SidedNativeEvents;
 
 /**
  * @author ZZZank

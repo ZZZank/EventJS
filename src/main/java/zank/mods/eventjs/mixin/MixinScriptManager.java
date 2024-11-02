@@ -1,4 +1,4 @@
-package zank.mods.eventsjs.mixin;
+package zank.mods.eventjs.mixin;
 
 import dev.latvian.kubejs.script.ScriptManager;
 import dev.latvian.kubejs.script.ScriptType;
@@ -8,7 +8,7 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import zank.mods.eventsjs.SidedNativeEvents;
+import zank.mods.eventjs.SidedNativeEvents;
 
 /**
  * @author ZZZank

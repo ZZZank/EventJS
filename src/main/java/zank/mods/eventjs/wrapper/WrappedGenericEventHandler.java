@@ -1,4 +1,4 @@
-package zank.mods.eventsjs.wrapper;
+package zank.mods.eventjs.wrapper;
 
 import net.minecraftforge.eventbus.api.GenericEvent;
 

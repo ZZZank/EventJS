@@ -36,7 +36,7 @@ Reloadable native event for older versions of KubeJS
 # An (optional) dependency for your mod. Though technically not required,
 # it's always helpful to add these to stop your mod from loading when something is missing
 # rather than erroring out later
-[[dependencies.eventsjs]]
+[[dependencies.eventjs]]
 modId = "forge"
 mandatory = true # do you **need** this mod to be able to launch?
 # A version range using interval notation.
@@ -46,7 +46,7 @@ ordering = "NONE" # Use this if you want your mod to be loaded specifically BEFO
 side = "BOTH" # Specify where this mod is required: can be BOTH, CLIENT or SERVER
 
 # And another dependency, use this if you want to require a certain Minecraft version.
-[[dependencies.eventsjs]]
+[[dependencies.eventjs]]
 modId = "minecraft"
 mandatory = true
 # See above for how to read this notation, this essentially means any
@@ -55,7 +55,7 @@ versionRange = "[1.16.5,)"
 ordering = "NONE"
 side = "BOTH"
 
-[[dependencies.eventsjs]]
+[[dependencies.eventjs]]
 modId = "kubejs"
 mandatory = true
 # See above for how to read this notation, this essentially means any

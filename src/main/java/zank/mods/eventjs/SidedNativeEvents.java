@@ -1,4 +1,4 @@
-package zank.mods.eventsjs;
+package zank.mods.eventjs;
 
 import dev.latvian.kubejs.forge.KubeJSForgeEventHandlerWrapper;
 import dev.latvian.kubejs.script.ScriptType;
@@ -8,8 +8,8 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.GenericEvent;
-import zank.mods.eventsjs.wrapper.ClassConvertible;
-import zank.mods.eventsjs.wrapper.WrappedGenericEventHandler;
+import zank.mods.eventjs.wrapper.ClassConvertible;
+import zank.mods.eventjs.wrapper.WrappedGenericEventHandler;
 
 import javax.annotation.Nonnull;
 import java.util.ArrayList;
