@@ -1,0 +1,15 @@
+{
+  "required": true,
+  "package": "zank.mods.eventsjs.mixin",
+  "compatibilityLevel": "JAVA_8",
+  "minVersion": "0.8",
+  "mixins": [
+    "MixinKubeJSForgePlugin",
+    "MixinScriptManager"
+  ],
+  "client": [
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}
