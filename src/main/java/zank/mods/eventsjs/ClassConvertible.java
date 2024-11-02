@@ -9,6 +9,8 @@ import java.util.function.Supplier;
  */
 public interface ClassConvertible extends Supplier<Class<?>> {
 
+    static void youDontNeedToLoadThisClassSinceIProvidedTypeWrappersForYou() {}
+
     static ClassConvertible fromRaw(Class<?> raw) {
         return () -> raw;
     }
