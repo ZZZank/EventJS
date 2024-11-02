@@ -1,7 +1,7 @@
 package zank.mods.eventjs.mixin;
 
-import dev.latvian.kubejs.forge.BuiltinKubeJSForgePlugin;
-import dev.latvian.kubejs.script.BindingsEvent;
+import dev.latvian.mods.kubejs.forge.BuiltinKubeJSForgePlugin;
+import dev.latvian.mods.kubejs.script.BindingsEvent;
 import lombok.val;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
