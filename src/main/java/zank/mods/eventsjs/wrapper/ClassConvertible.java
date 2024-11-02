@@ -1,4 +1,4 @@
-package zank.mods.eventsjs;
+package zank.mods.eventsjs.wrapper;
 
 import dev.latvian.mods.rhino.NativeJavaClass;
 

@@ -7,6 +7,9 @@ import lombok.val;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.eventbus.api.EventPriority;
+import net.minecraftforge.eventbus.api.GenericEvent;
+import zank.mods.eventsjs.wrapper.ClassConvertible;
+import zank.mods.eventsjs.wrapper.WrappedGenericEventHandler;
 
 import javax.annotation.Nonnull;
 import java.util.ArrayList;
@@ -27,7 +30,7 @@ public final class SidedNativeEvents {
         return BY_TYPE.get(type);
     }
 
-    private final List<KubeJSForgeEventHandlerWrapper> handlers = new ArrayList<>();
+    private final List<Object> handlers = new ArrayList<>();
     public final ScriptType type;
 
     private SidedNativeEvents(ScriptType type) {
@@ -64,5 +67,34 @@ public final class SidedNativeEvents {
             (Class<Event>) eventType,
             handler
         );
+    }
+
+    public void onGenericEvent(
+        ClassConvertible genericClassFilter,
+        EventPriority priority,
+        boolean receiveCancelled,
+        ClassConvertible type,
+        WrappedGenericEventHandler handler
+    ) {
+        val eventType = (Class<GenericEvent>) type.get();
+        if (!GenericEvent.class.isAssignableFrom(eventType)) {
+            throw new IllegalArgumentException(String.format("Event class must be a subclass of '%s'", GenericEvent.class));
+        }
+        handlers.add(handler);
+        MinecraftForge.EVENT_BUS.addGenericListener(
+            (Class<Object>) genericClassFilter.get(),
+            priority,
+            receiveCancelled,
+            eventType,
+            handler
+        );
+    }
+
+    public void onGenericEvent(
+        ClassConvertible genericClassFilter,
+        ClassConvertible type,
+        WrappedGenericEventHandler handler
+    ) {
+        onGenericEvent(genericClassFilter, EventPriority.NORMAL, false, type, handler);
     }
 }

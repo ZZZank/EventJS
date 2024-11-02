@@ -4,6 +4,7 @@ import dev.latvian.kubejs.KubeJSPlugin;
 import dev.latvian.kubejs.script.BindingsEvent;
 import dev.latvian.kubejs.script.ScriptType;
 import dev.latvian.mods.rhino.util.wrap.TypeWrappers;
+import zank.mods.eventsjs.wrapper.ClassConvertible;
 
 /**
  * @author ZZZank
