@@ -20,11 +20,11 @@ import java.util.List;
  * @author ZZZank
  */
 public final class SidedNativeEvents {
+    private static final EnumMap<ScriptType, SidedNativeEvents> BY_TYPE = new EnumMap<>(ScriptType.class);
+
     public static final SidedNativeEvents STARTUP = new SidedNativeEvents(ScriptType.STARTUP);
     public static final SidedNativeEvents SERVER = new SidedNativeEvents(ScriptType.SERVER);
     public static final SidedNativeEvents CLIENT = new SidedNativeEvents(ScriptType.CLIENT);
-
-    private static final EnumMap<ScriptType, SidedNativeEvents> BY_TYPE = new EnumMap<>(ScriptType.class);
 
     public static SidedNativeEvents byType(@Nonnull ScriptType type) {
         return BY_TYPE.get(type);
@@ -82,7 +82,7 @@ public final class SidedNativeEvents {
         }
         handlers.add(handler);
         MinecraftForge.EVENT_BUS.addGenericListener(
-            (Class<Object>) genericClassFilter.get(),
+            genericClassFilter.get(),
             priority,
             receiveCancelled,
             eventType,
