@@ -21,7 +21,7 @@ public class MixinScriptManager {
     public ScriptType type;
 
     @Inject(method = "unload", at = @At("TAIL"))
-    public void onUnload(CallbackInfo ci) {
+    public void ejs$onUnload(CallbackInfo ci) {
         SidedNativeEvents.byType(this.type).unload();
     }
 }

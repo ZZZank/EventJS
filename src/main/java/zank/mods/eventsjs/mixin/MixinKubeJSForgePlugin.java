@@ -4,8 +4,6 @@ import dev.latvian.kubejs.forge.BuiltinKubeJSForgePlugin;
 import dev.latvian.kubejs.forge.KubeJSForgeEventHandlerWrapper;
 import dev.latvian.kubejs.script.BindingsEvent;
 import lombok.val;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.eventbus.api.EventPriority;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -20,7 +18,7 @@ import zank.mods.eventsjs.SidedNativeEvents;
 public abstract class MixinKubeJSForgePlugin {
 
     @Inject(method = "onPlatformEvent", at = @At("HEAD"), cancellable = true)
-    private static void replace(BindingsEvent event, Object[] args, CallbackInfoReturnable<Object> cir) {
+    private static void ejs$replaceImpl(BindingsEvent event, Object[] args, CallbackInfoReturnable<Object> cir) {
         if (args.length < 2 || !(args[0] instanceof CharSequence)) {
             throw new RuntimeException("Invalid syntax! onPlatformEvent(string, function) required event class and handler");
         }
