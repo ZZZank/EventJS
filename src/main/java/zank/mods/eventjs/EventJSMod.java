@@ -5,7 +5,6 @@ import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.IModBusEvent;
-import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 
 /**
  * @author ZZZank
@@ -18,8 +17,8 @@ public class EventJSMod {
 
     static IEventBus MOD_BUS;
 
-    public EventJSMod(FMLJavaModLoadingContext context) {
-        MOD_BUS = context.getModEventBus();
+    public EventJSMod(IEventBus bus) {
+        MOD_BUS = bus;
     }
 
     public static IEventBus selectBus(Class<? extends Event> eventType) {
