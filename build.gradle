@@ -11,7 +11,7 @@ version = project.mod_version
 group = project.maven_group
 
 java {
-    sourceCompatibility = targetCompatibility = JavaVersion.VERSION_1_8
+    sourceCompatibility = targetCompatibility = JavaVersion.VERSION_17
 }
 
 loom {
@@ -64,38 +64,13 @@ repositories {
 dependencies {
     // to change the versions see the gradle.properties file
     minecraft "com.mojang:minecraft:${project.minecraft_version}"
-
-    // choose what mappings you want to use here
-    // leave this uncommented if you want to use
-    // mojang's official mappings, or feel free
-    // to add your own mappings here (how about
-    // mojmap layered with parchment, for example?)
     mappings loom.officialMojangMappings()
+    forge("net.minecraftforge:forge:${minecraft_version}-${project.forge_version}")
 
     compileOnly 'org.projectlombok:lombok:1.18.34'
     annotationProcessor 'org.projectlombok:lombok:1.18.34'
 
-    // uncomment this if you want to use yarn mappings
-    // mappings "net.fabricmc:yarn:${project.yarn_mappings}:v2"
-
-    // your forge dependency, this is **required** when using Forge Loom in forge mode!
-    forge "net.minecraftforge:forge:${project.forge_version}"
-
-    // additional dependencies can be specified using loom's regular format
-    // specifying a "mod" dependency (like modImplementation or modApi)
-    // will cause loom to remap the file to your specified mappings
-
     modApi("dev.latvian.mods:kubejs-forge:${kubejs_version}")
-
-    // in this example, we'll be adding JEI as a dependency
-    // according to their developer example on GitHub
-    // see: https://github.com/mezz/JustEnoughItems/wiki/Getting-Started
-    // compile against the JEI API but do not include it at runtime
-    // don't worry about loom "not finding a forge mod" here,
-    // JEI's api just doesn't have any class with an @Mod annotation
-    // modCompileOnly "mezz.jei:jei-1.16.5:${jei_version}:api"
-    // at runtime, use the full JEI jar
-    // modRuntimeOnly "mezz.jei:jei-1.16.5:${jei_version}"
 }
 
 processResources {
@@ -120,14 +95,8 @@ tasks.withType(JavaCompile) {
     // see http://yodaconditions.net/blog/fix-for-java-file-encoding-problems-with-gradle.html
     // If Javadoc is generated, this must be specified in that task too.
     options.encoding = "UTF-8"
-
-    // The Minecraft launcher currently installs Java 8 for users, so your mod probably wants to target Java 8 too
-    // JDK 9 introduced a new way of specifying this that will make sure no newer classes or methods are used.
-    // We'll use that if it's available, but otherwise we'll use the older option.
-    def targetVersion = 8
-    if (JavaVersion.current().isJava9Compatible()) {
-        options.release = targetVersion
-    }
+    options.compilerArgs << '-parameters'
+    options.release = 17
 }
 
 java {
