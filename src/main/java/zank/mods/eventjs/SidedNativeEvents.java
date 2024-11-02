@@ -51,42 +51,56 @@ public final class SidedNativeEvents {
     }
 
     public void onEvent(
-        EventPriority priority,
-        boolean receiveCancelled,
-        ClassConvertible type,
-        KubeJSForgeEventHandlerWrapper handler
+        final EventPriority priority,
+        final boolean receiveCancelled,
+        final ClassConvertible type,
+        final KubeJSForgeEventHandlerWrapper handler
     ) {
+        final KubeJSForgeEventHandlerWrapper safed = event -> {
+            try {
+                handler.accept(event);
+            } catch (Exception e) {
+                this.type.console.error("Error when handling native event", e);
+            }
+        };
         val eventType = type.get();
         if (!Event.class.isAssignableFrom(eventType)) {
             throw new IllegalArgumentException(String.format("Event class must be a subclass of '%s'", Event.class));
         }
-        handlers.add(handler);
+        handlers.add(safed);
         MinecraftForge.EVENT_BUS.addListener(
             priority,
             receiveCancelled,
             (Class<Event>) eventType,
-            handler
+            safed
         );
     }
 
     public void onGenericEvent(
-        ClassConvertible genericClassFilter,
-        EventPriority priority,
-        boolean receiveCancelled,
-        ClassConvertible type,
-        WrappedGenericEventHandler handler
+        final ClassConvertible genericClassFilter,
+        final EventPriority priority,
+        final boolean receiveCancelled,
+        final ClassConvertible type,
+        final WrappedGenericEventHandler handler
     ) {
+        final WrappedGenericEventHandler safed = event -> {
+            try {
+                handler.accept(event);
+            } catch (Exception e) {
+                this.type.console.error("Error when handling native generic event", e);
+            }
+        };
         val eventType = (Class<GenericEvent>) type.get();
         if (!GenericEvent.class.isAssignableFrom(eventType)) {
             throw new IllegalArgumentException(String.format("Event class must be a subclass of '%s'", GenericEvent.class));
         }
-        handlers.add(handler);
+        handlers.add(safed);
         MinecraftForge.EVENT_BUS.addGenericListener(
             genericClassFilter.get(),
             priority,
             receiveCancelled,
             eventType,
-            handler
+            safed
         );
     }
 
