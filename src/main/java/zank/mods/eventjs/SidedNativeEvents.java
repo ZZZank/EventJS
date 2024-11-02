@@ -1,7 +1,7 @@
 package zank.mods.eventjs;
 
+import dev.latvian.mods.kubejs.script.ScriptType;
 import zank.mods.eventjs.wrapper.WrappedEventHandler;
-import dev.latvian.kubejs.script.ScriptType;
 import dev.latvian.mods.rhino.util.HideFromJS;
 import lombok.val;
 import net.minecraftforge.common.MinecraftForge;
