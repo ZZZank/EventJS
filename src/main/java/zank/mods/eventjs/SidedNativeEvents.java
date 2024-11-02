@@ -63,15 +63,15 @@ public final class SidedNativeEvents {
                 this.type.console.error("Error when handling native event", e);
             }
         };
-        val eventType = type.get();
+        val eventType = (Class<Event>) type.get();
         if (!Event.class.isAssignableFrom(eventType)) {
             throw new IllegalArgumentException(String.format("Event class must be a subclass of '%s'", Event.class));
         }
         handlers.add(safed);
-        MinecraftForge.EVENT_BUS.addListener(
+        EventJSMod.selectBus(eventType).addListener(
             priority,
             receiveCancelled,
-            (Class<Event>) eventType,
+            eventType,
             safed
         );
     }
@@ -95,7 +95,7 @@ public final class SidedNativeEvents {
             throw new IllegalArgumentException(String.format("Event class must be a subclass of '%s'", GenericEvent.class));
         }
         handlers.add(safed);
-        MinecraftForge.EVENT_BUS.addGenericListener(
+        EventJSMod.selectBus(eventType).addGenericListener(
             genericClassFilter.get(),
             priority,
             receiveCancelled,
