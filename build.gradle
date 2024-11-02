@@ -105,7 +105,12 @@ processResources {
     // this will replace the property "${version}" in your mods.toml
     // with the version you've defined in your gradle.properties
     filesMatching("META-INF/mods.toml") {
-        expand "version": project.version
+        expand(
+            "version": project.version,
+            "forge_version_range": forge_version_range,
+            "minecraft_version": minecraft_version,
+            "kubejs_version": kubejs_version
+        )
     }
 }
 
