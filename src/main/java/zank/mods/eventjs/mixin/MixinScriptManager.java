@@ -14,7 +14,7 @@ import zank.mods.eventjs.SidedNativeEvents;
  * @author ZZZank
  */
 @Mixin(value = ScriptManager.class, remap = false)
-public class MixinScriptManager {
+public abstract class MixinScriptManager {
 
     @Shadow
     @Final

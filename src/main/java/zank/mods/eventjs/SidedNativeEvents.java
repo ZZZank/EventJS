@@ -1,6 +1,6 @@
 package zank.mods.eventjs;
 
-import dev.latvian.kubejs.forge.KubeJSForgeEventHandlerWrapper;
+import zank.mods.eventjs.wrapper.WrappedEventHandler;
 import dev.latvian.kubejs.script.ScriptType;
 import dev.latvian.mods.rhino.util.HideFromJS;
 import lombok.val;
@@ -46,7 +46,7 @@ public final class SidedNativeEvents {
         handlers.clear();
     }
 
-    public void onEvent(ClassConvertible type, KubeJSForgeEventHandlerWrapper handler) {
+    public void onEvent(ClassConvertible type, WrappedEventHandler handler) {
         onEvent(EventPriority.NORMAL, false, type, handler);
     }
 
@@ -54,9 +54,9 @@ public final class SidedNativeEvents {
         final EventPriority priority,
         final boolean receiveCancelled,
         final ClassConvertible type,
-        final KubeJSForgeEventHandlerWrapper handler
+        final WrappedEventHandler handler
     ) {
-        final KubeJSForgeEventHandlerWrapper safed = event -> {
+        final WrappedEventHandler safed = event -> {
             try {
                 handler.accept(event);
             } catch (Exception e) {
