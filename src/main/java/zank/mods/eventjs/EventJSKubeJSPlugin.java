@@ -18,6 +18,6 @@ public class EventJSKubeJSPlugin extends KubeJSPlugin {
 
     @Override
     public void addBindings(BindingsEvent event) {
-        event.add("NativeEvent", SidedNativeEvents.byType(event.type));
+        event.add("NativeEvents", SidedNativeEvents.byType(event.type));
     }
 }
