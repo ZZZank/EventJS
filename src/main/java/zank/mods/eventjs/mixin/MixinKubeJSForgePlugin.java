@@ -19,14 +19,14 @@ public abstract class MixinKubeJSForgePlugin {
 
     @Inject(method = "onPlatformEvent", at = @At("HEAD"), cancellable = true)
     private static void ejs$replaceImpl(BindingsEvent event, Object[] args, CallbackInfoReturnable<Object> cir) {
-        if (args.length < 2 || !(args[0] instanceof CharSequence)) {
+        if (args.length < 2) {
             throw new RuntimeException("Invalid syntax! onPlatformEvent(string, function) required event class and handler");
         }
 
         try {
-            val type = (Class) Class.forName(args[0].toString());
+            val type = ClassConvertible.of(args[0]);
             val handler = (KubeJSForgeEventHandlerWrapper) args[1];
-            SidedNativeEvents.STARTUP.onEvent(ClassConvertible.fromRaw(type), handler);
+            SidedNativeEvents.STARTUP.onEvent(type, handler);
         } catch (Exception ex) {
             throw new RuntimeException(ex);
         }
