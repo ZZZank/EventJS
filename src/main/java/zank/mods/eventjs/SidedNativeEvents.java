@@ -46,7 +46,7 @@ public final class SidedNativeEvents {
         handlers.clear();
     }
 
-    public void onEvent(ClassConvertible type, WrappedEventHandler handler) {
+    public void onEvent(final ClassConvertible type, final WrappedEventHandler handler) {
         onEvent(EventPriority.NORMAL, false, type, handler);
     }
 
@@ -105,9 +105,9 @@ public final class SidedNativeEvents {
     }
 
     public void onGenericEvent(
-        ClassConvertible genericClassFilter,
-        ClassConvertible type,
-        WrappedGenericEventHandler handler
+        final ClassConvertible genericClassFilter,
+        final ClassConvertible type,
+        final WrappedGenericEventHandler handler
     ) {
         onGenericEvent(genericClassFilter, EventPriority.NORMAL, false, type, handler);
     }

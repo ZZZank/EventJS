@@ -7,5 +7,6 @@ import java.util.function.Consumer;
 /**
  * @author ZZZank
  */
+@FunctionalInterface
 public interface WrappedEventHandler extends Consumer<Event> {
 }

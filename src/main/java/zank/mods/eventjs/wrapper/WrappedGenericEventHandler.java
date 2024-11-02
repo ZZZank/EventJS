@@ -7,5 +7,6 @@ import java.util.function.Consumer;
 /**
  * @author ZZZank
  */
+@FunctionalInterface
 public interface WrappedGenericEventHandler extends Consumer<GenericEvent> {
 }
