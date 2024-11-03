@@ -1,7 +1,7 @@
 package zank.mods.eventjs.mixin;
 
-import dev.latvian.kubejs.script.ScriptManager;
-import dev.latvian.kubejs.script.ScriptType;
+import dev.latvian.mods.kubejs.script.ScriptManager;
+import dev.latvian.mods.kubejs.script.ScriptType;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -18,10 +18,10 @@ public abstract class MixinScriptManager {
 
     @Shadow
     @Final
-    public ScriptType type;
+    public ScriptType scriptType;
 
     @Inject(method = "unload", at = @At("TAIL"))
     public void ejs$onUnload(CallbackInfo ci) {
-        SidedNativeEvents.byType(this.type).unload();
+        SidedNativeEvents.byType(this.scriptType).unload();
     }
 }
