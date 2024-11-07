@@ -15,6 +15,7 @@ import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.List;
+import java.util.function.Consumer;
 
 /**
  * @author ZZZank
@@ -56,24 +57,36 @@ public final class SidedNativeEvents {
         final ClassConvertible type,
         final WrappedEventHandler handler
     ) {
-        final WrappedEventHandler safed = event -> {
+        val eventType = (Class<Event>) type.get();
+        if (!Event.class.isAssignableFrom(eventType)) {
+            throw new IllegalArgumentException(String.format("Event class must be a subclass of '%s'", Event.class));
+        }
+        onEventTyped(priority, receiveCancelled, eventType, handler);
+    }
+
+    <T extends Event> void onEventTyped(
+        EventPriority priority,
+        boolean receiveCancelled,
+        Class<T> eventType,
+        Consumer<T> handler
+    ) {
+        final Consumer<T> safed = event -> {
             try {
                 handler.accept(event);
             } catch (Exception e) {
                 this.type.console.error("Error when handling native event", e);
             }
         };
-        val eventType = (Class<Event>) type.get();
-        if (!Event.class.isAssignableFrom(eventType)) {
-            throw new IllegalArgumentException(String.format("Event class must be a subclass of '%s'", Event.class));
-        }
         handlers.add(safed);
-        EventJSMod.selectBus(eventType).addListener(
-            priority,
-            receiveCancelled,
-            eventType,
-            safed
-        );
+        EventJSMod.selectBus(eventType).addListener(priority, receiveCancelled, eventType, safed);
+    }
+
+    public void onGenericEvent(
+        final ClassConvertible genericClassFilter,
+        final ClassConvertible type,
+        final WrappedGenericEventHandler handler
+    ) {
+        onGenericEvent(genericClassFilter, EventPriority.NORMAL, false, type, handler);
     }
 
     public void onGenericEvent(
@@ -83,32 +96,34 @@ public final class SidedNativeEvents {
         final ClassConvertible type,
         final WrappedGenericEventHandler handler
     ) {
-        final WrappedGenericEventHandler safed = event -> {
+        val eventType = (Class<GenericEvent>) type.get();
+        if (!GenericEvent.class.isAssignableFrom(eventType)) {
+            throw new IllegalArgumentException(String.format("Event class must be a subclass of '%s'", GenericEvent.class));
+        }
+        onGenericEventTyped(genericClassFilter.get(), priority, receiveCancelled, eventType, handler);
+    }
+
+    <T extends GenericEvent<? extends F>, F> void onGenericEventTyped(
+        Class<F> genericClassFilter,
+        EventPriority priority,
+        boolean receiveCancelled,
+        Class<T> eventType,
+        Consumer<T> handler
+    ) {
+        final Consumer<T> safed = event -> {
             try {
                 handler.accept(event);
             } catch (Exception e) {
                 this.type.console.error("Error when handling native generic event", e);
             }
         };
-        val eventType = (Class<GenericEvent>) type.get();
-        if (!GenericEvent.class.isAssignableFrom(eventType)) {
-            throw new IllegalArgumentException(String.format("Event class must be a subclass of '%s'", GenericEvent.class));
-        }
         handlers.add(safed);
         EventJSMod.selectBus(eventType).addGenericListener(
-            genericClassFilter.get(),
+            genericClassFilter,
             priority,
             receiveCancelled,
             eventType,
             safed
         );
-    }
-
-    public void onGenericEvent(
-        final ClassConvertible genericClassFilter,
-        final ClassConvertible type,
-        final WrappedGenericEventHandler handler
-    ) {
-        onGenericEvent(genericClassFilter, EventPriority.NORMAL, false, type, handler);
     }
 }
