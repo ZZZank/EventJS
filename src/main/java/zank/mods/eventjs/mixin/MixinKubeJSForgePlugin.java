@@ -20,7 +20,7 @@ public abstract class MixinKubeJSForgePlugin {
     @Inject(method = "onPlatformEvent", at = @At("HEAD"), cancellable = true)
     private static void ejs$replaceImpl(BindingsEvent event, Object[] args, CallbackInfoReturnable<Object> cir) {
         if (args.length < 2) {
-            throw new RuntimeException("Invalid syntax! onPlatformEvent(string, function) required event class and handler");
+            throw new RuntimeException("Invalid syntax! onPlatformEvent(string | class, function) required event class and handler");
         }
 
         try {
