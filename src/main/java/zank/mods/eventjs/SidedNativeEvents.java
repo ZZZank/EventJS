@@ -1,20 +1,18 @@
 package zank.mods.eventjs;
 
-import zank.mods.eventjs.wrapper.WrappedEventHandler;
 import dev.latvian.kubejs.script.ScriptType;
 import dev.latvian.mods.rhino.util.HideFromJS;
 import lombok.val;
-import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.GenericEvent;
+import net.minecraftforge.eventbus.api.IEventBus;
 import zank.mods.eventjs.wrapper.ClassConvertible;
+import zank.mods.eventjs.wrapper.WrappedEventHandler;
 import zank.mods.eventjs.wrapper.WrappedGenericEventHandler;
 
 import javax.annotation.Nonnull;
-import java.util.ArrayList;
-import java.util.EnumMap;
-import java.util.List;
+import java.util.*;
 import java.util.function.Consumer;
 
 /**
@@ -31,7 +29,7 @@ public final class SidedNativeEvents {
         return BY_TYPE.get(type);
     }
 
-    private final List<Object> handlers = new ArrayList<>();
+    private final List<PackedHandler<?>> packedHandlers = new ArrayList<>();
     public final ScriptType type;
 
     private SidedNativeEvents(ScriptType type) {
@@ -41,10 +39,10 @@ public final class SidedNativeEvents {
 
     @HideFromJS
     public void unload() {
-        for (val handler : handlers) {
-            MinecraftForge.EVENT_BUS.unregister(handler);
+        for (val packed : packedHandlers) {
+            packed.bus.unregister(packed.handler);
         }
-        handlers.clear();
+        packedHandlers.clear();
     }
 
     public void onEvent(final ClassConvertible type, final WrappedEventHandler handler) {
@@ -70,15 +68,9 @@ public final class SidedNativeEvents {
         Class<T> eventType,
         Consumer<T> handler
     ) {
-        final Consumer<T> safed = event -> {
-            try {
-                handler.accept(event);
-            } catch (Exception e) {
-                this.type.console.error("Error when handling native event", e);
-            }
-        };
-        handlers.add(safed);
-        EventJSMod.selectBus(eventType).addListener(priority, receiveCancelled, eventType, safed);
+        val packed = new PackedHandler<>(EventJSMod.selectBus(eventType), handler);
+        packedHandlers.add(packed);
+        packed.bus.addListener(priority, receiveCancelled, eventType, packed.handler);
     }
 
     public void onGenericEvent(
@@ -110,20 +102,24 @@ public final class SidedNativeEvents {
         Class<T> eventType,
         Consumer<T> handler
     ) {
-        final Consumer<T> safed = event -> {
-            try {
-                handler.accept(event);
-            } catch (Exception e) {
-                this.type.console.error("Error when handling native generic event", e);
-            }
-        };
-        handlers.add(safed);
-        EventJSMod.selectBus(eventType).addGenericListener(
-            genericClassFilter,
-            priority,
-            receiveCancelled,
-            eventType,
-            safed
-        );
+        val packed = new PackedHandler<>(EventJSMod.selectBus(eventType), handler);
+        packedHandlers.add(packed);
+        packed.bus.addGenericListener(genericClassFilter, priority, receiveCancelled, eventType, packed.handler);
+    }
+
+    class PackedHandler<T> {
+        public final IEventBus bus;
+        public final Consumer<T> handler;
+
+        public PackedHandler(IEventBus bus, Consumer<T> handler) {
+            this.bus = bus;
+            this.handler = event -> {
+                try {
+                    handler.accept(event);
+                } catch (Exception e) {
+                    SidedNativeEvents.this.type.console.error("Error when handling native event", e);
+                }
+            };
+        }
     }
 }
