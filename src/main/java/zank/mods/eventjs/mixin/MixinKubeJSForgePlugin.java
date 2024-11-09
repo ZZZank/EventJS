@@ -3,13 +3,15 @@ package zank.mods.eventjs.mixin;
 import dev.latvian.mods.kubejs.forge.BuiltinKubeJSForgePlugin;
 import dev.latvian.mods.kubejs.script.BindingsEvent;
 import lombok.val;
+import net.minecraftforge.eventbus.api.Event;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import zank.mods.eventjs.wrapper.ClassConvertible;
 import zank.mods.eventjs.SidedNativeEvents;
-import zank.mods.eventjs.wrapper.WrappedEventHandler;
+
+import java.util.function.Consumer;
 
 /**
  * @author ZZZank
@@ -25,8 +27,8 @@ public abstract class MixinKubeJSForgePlugin {
 
         try {
             val type = ClassConvertible.of(args[0]);
-            val handler = (WrappedEventHandler) args[1];
-            SidedNativeEvents.STARTUP.onEvent(type, handler);
+            val handler = (Consumer<Event>) args[1];
+            SidedNativeEvents.STARTUP.onEvent(type, handler::accept);
         } catch (Exception ex) {
             throw new RuntimeException(ex);
         }
