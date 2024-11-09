@@ -62,7 +62,7 @@ public final class SidedNativeEvents {
         onEventTyped(priority, receiveCancelled, eventType, handler);
     }
 
-    <T extends Event> void onEventTyped(
+    public <T extends Event> void onEventTyped(
         EventPriority priority,
         boolean receiveCancelled,
         Class<T> eventType,
@@ -95,7 +95,7 @@ public final class SidedNativeEvents {
         onGenericEventTyped(genericClassFilter.get(), priority, receiveCancelled, eventType, handler);
     }
 
-    <T extends GenericEvent<? extends F>, F> void onGenericEventTyped(
+    public <T extends GenericEvent<? extends F>, F> void onGenericEventTyped(
         Class<F> genericClassFilter,
         EventPriority priority,
         boolean receiveCancelled,
