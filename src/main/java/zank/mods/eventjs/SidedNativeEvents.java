@@ -40,7 +40,7 @@ public final class SidedNativeEvents {
     @HideFromJS
     public void unload() {
         for (val packed : packedHandlers) {
-            packed.bus.unregister(packed.handler);
+            packed.bus.unregister(packed);
         }
         packedHandlers.clear();
     }
@@ -70,7 +70,7 @@ public final class SidedNativeEvents {
     ) {
         val packed = new PackedHandler<>(EventJSMod.selectBus(eventType), handler);
         packedHandlers.add(packed);
-        packed.bus.addListener(priority, receiveCancelled, eventType, packed.handler);
+        packed.bus.addListener(priority, receiveCancelled, eventType, packed);
     }
 
     public void onGenericEvent(
@@ -104,22 +104,25 @@ public final class SidedNativeEvents {
     ) {
         val packed = new PackedHandler<>(EventJSMod.selectBus(eventType), handler);
         packedHandlers.add(packed);
-        packed.bus.addGenericListener(genericClassFilter, priority, receiveCancelled, eventType, packed.handler);
+        packed.bus.addGenericListener(genericClassFilter, priority, receiveCancelled, eventType, packed);
     }
 
-    class PackedHandler<T> {
-        public final IEventBus bus;
-        public final Consumer<T> handler;
+    private final class PackedHandler<T> implements Consumer<T> {
+        private final IEventBus bus;
+        private final Consumer<T> inner;
 
-        public PackedHandler(IEventBus bus, Consumer<T> handler) {
-            this.bus = bus;
-            this.handler = event -> {
-                try {
-                    handler.accept(event);
-                } catch (Exception e) {
-                    SidedNativeEvents.this.type.console.error("Error when handling native event", e);
-                }
-            };
+        public PackedHandler(IEventBus bus, Consumer<T> inner) {
+            this.bus = Objects.requireNonNull(bus);
+            this.inner = Objects.requireNonNull(inner);
+        }
+
+        @Override
+        public void accept(T event) {
+            try {
+                inner.accept(event);
+            } catch (Exception e) {
+                SidedNativeEvents.this.type.console.error("Error when handling native event", e);
+            }
         }
     }
 
