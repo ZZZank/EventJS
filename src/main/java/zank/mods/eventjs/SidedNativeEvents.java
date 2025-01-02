@@ -122,4 +122,8 @@ public final class SidedNativeEvents {
             };
         }
     }
+
+    public int getHandlerCount() {
+        return packedHandlers.size();
+    }
 }
