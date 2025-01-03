@@ -25,12 +25,10 @@ logoFile="eventjs_icon.png"
 # Some more fluff displayed in the Mods panel. Feel free to issue your special thanks here!
 # credits="Thanks to Mojang for making this great game" #optional
 # Some more fluff displayed in the Mods panel. Plug your stuff here!
-# authors="Me!" #optional
+authors="Zank"
 # A multi-line description for your mod. This has no minimum length, but it *is* required!
 description = '''
-Reloadable native event for older versions of KubeJS
-
-(come on it's not hard at all, why 1.21 only)
+Reloadable sided native event listening for KubeJS
 '''
 
 # An (optional) dependency for your mod. Though technically not required,
@@ -58,8 +56,6 @@ side = "BOTH"
 [[dependencies.eventjs]]
 modId = "kubejs"
 mandatory = true
-# See above for how to read this notation, this essentially means any
-# version of Minecraft from 1.16.5 (inclusive).
 versionRange = "[${kubejs_version},)"
 ordering = "AFTER"
 side = "BOTH"
