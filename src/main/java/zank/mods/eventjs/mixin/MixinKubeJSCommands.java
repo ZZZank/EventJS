@@ -36,7 +36,7 @@ public abstract class MixinKubeJSCommands {
     private static void ejs$sendByType(CommandSourceStack source, SidedNativeEvents events) {
         source.sendSuccess(
             new TranslatableComponent(
-                "EventJS refreshed native event listeners for %s, %s handler(s) in total",
+                "EventJS refreshed native event listening for %s, %s handler(s) in total",
                 events.type,
                 events.getHandlerCount()
             )

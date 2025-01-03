@@ -9,4 +9,7 @@ import java.util.function.Consumer;
  */
 @FunctionalInterface
 public interface WrappedGenericEventHandler extends Consumer<GenericEvent> {
+
+    @Override
+    void accept(GenericEvent genericEvent);
 }
