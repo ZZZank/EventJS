@@ -1,9 +1,9 @@
 package zank.mods.eventjs.mixin;
 
-import dev.latvian.kubejs.command.KubeJSCommands;
+import dev.latvian.mods.kubejs.command.KubeJSCommands;
 import net.minecraft.ChatFormatting;
 import net.minecraft.commands.CommandSourceStack;
-import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.network.chat.Component;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
@@ -35,7 +35,7 @@ public abstract class MixinKubeJSCommands {
     @Unique
     private static void ejs$sendByType(CommandSourceStack source, SidedNativeEvents events) {
         source.sendSuccess(
-            new TranslatableComponent(
+            () -> Component.translatable(
                 "EventJS refreshed native event listening for %s, %s handler(s) in total",
                 events.type,
                 events.getHandlerCount()
