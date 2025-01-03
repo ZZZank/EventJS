@@ -1,6 +1,6 @@
 package zank.mods.eventjs.mixin;
 
-import dev.latvian.kubejs.command.KubeJSCommands;
+import dev.latvian.mods.kubejs.command.KubeJSCommands;
 import net.minecraft.ChatFormatting;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.network.chat.TranslatableComponent;
