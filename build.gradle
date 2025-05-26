@@ -1,5 +1,5 @@
 plugins {
-    id "dev.architectury.loom" version "1.7-SNAPSHOT"
+    id "dev.architectury.loom" version "1.10-SNAPSHOT"
     id "maven-publish"
 }
 
@@ -52,11 +52,19 @@ repositories {
             includeGroup("me.shedaniel")
         }
     }
+
     maven {
-        url "https://maven.saps.dev/minecraft"
+        url "https://maven.latvian.dev/releases"
         content {
             includeGroup "dev.latvian.mods"
-            includeGroup "dev.ftb.mods"
+            includeGroup "dev.latvian.apps"
+        }
+    }
+
+    maven {
+        url 'https://jitpack.io'
+        content {
+            includeGroup "com.github.rtyley"
         }
     }
 }
@@ -67,8 +75,8 @@ dependencies {
     mappings loom.officialMojangMappings()
     forge("net.minecraftforge:forge:${minecraft_version}-${project.forge_version}")
 
-    compileOnly 'org.projectlombok:lombok:1.18.34'
-    annotationProcessor 'org.projectlombok:lombok:1.18.34'
+    compileOnly 'org.projectlombok:lombok:1.18.38'
+    annotationProcessor 'org.projectlombok:lombok:1.18.38'
 
     modApi("dev.latvian.mods:kubejs-forge:${kubejs_version}")
 }
