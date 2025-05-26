@@ -8,8 +8,6 @@ import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.GenericEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import zank.mods.eventjs.wrapper.ClassConvertible;
-import zank.mods.eventjs.wrapper.WrappedEventHandler;
-import zank.mods.eventjs.wrapper.WrappedGenericEventHandler;
 
 import javax.annotation.Nonnull;
 import java.util.*;
@@ -45,7 +43,7 @@ public final class SidedNativeEvents {
         packedHandlers.clear();
     }
 
-    public void onEvent(final ClassConvertible type, final WrappedEventHandler handler) {
+    public void onEvent(final ClassConvertible type, final Consumer<Event> handler) {
         onEvent(EventPriority.NORMAL, false, type, handler);
     }
 
@@ -53,7 +51,7 @@ public final class SidedNativeEvents {
         final EventPriority priority,
         final boolean receiveCancelled,
         final ClassConvertible type,
-        final WrappedEventHandler handler
+        final Consumer<Event> handler
     ) {
         val eventType = (Class<Event>) type.get();
         if (!Event.class.isAssignableFrom(eventType)) {
@@ -76,7 +74,7 @@ public final class SidedNativeEvents {
     public void onGenericEvent(
         final ClassConvertible genericClassFilter,
         final ClassConvertible type,
-        final WrappedGenericEventHandler handler
+        final Consumer<GenericEvent> handler
     ) {
         onGenericEvent(genericClassFilter, EventPriority.NORMAL, false, type, handler);
     }
@@ -86,7 +84,7 @@ public final class SidedNativeEvents {
         final EventPriority priority,
         final boolean receiveCancelled,
         final ClassConvertible type,
-        final WrappedGenericEventHandler handler
+        final Consumer<GenericEvent> handler
     ) {
         val eventType = (Class<GenericEvent>) type.get();
         if (!GenericEvent.class.isAssignableFrom(eventType)) {
