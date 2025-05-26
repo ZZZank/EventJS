@@ -8,7 +8,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-import zank.mods.eventjs.wrapper.ClassConvertible;
+import zank.mods.eventjs.EventJSMod;
 import zank.mods.eventjs.SidedNativeEvents;
 
 import java.util.function.Consumer;
@@ -26,9 +26,9 @@ public abstract class MixinKubeJSForgePlugin {
         }
 
         try {
-            val type = ClassConvertible.of(args[0]);
+            val type = (Class<? extends Event>) EventJSMod.ofClass(args[0]);
             val handler = (Consumer<Event>) args[1];
-            SidedNativeEvents.STARTUP.onEvent(type, handler::accept);
+            SidedNativeEvents.STARTUP.onEvent( type, handler::accept);
         } catch (Exception ex) {
             throw new RuntimeException(ex);
         }
