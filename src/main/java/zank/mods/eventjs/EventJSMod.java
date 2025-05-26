@@ -1,7 +1,6 @@
 package zank.mods.eventjs;
 
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.eventbus.api.Event;
+import dev.latvian.mods.rhino.NativeJavaClass;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.IModBusEvent;
@@ -24,9 +23,18 @@ public class EventJSMod {
             : FMLJavaModLoadingContext.get().getModEventBus();
     }
 
-    public static IEventBus selectBus(Class<? extends Event> eventType) {
-        return IModBusEvent.class.isAssignableFrom(eventType)
-            ? MOD_BUS
-            : MinecraftForge.EVENT_BUS;
+    public static Class<?> ofClass(Object o) {
+        if (o instanceof CharSequence) {
+            try {
+                return Class.forName(o.toString());
+            } catch (ClassNotFoundException e) {
+                throw new RuntimeException(e);
+            }
+        } else if (o instanceof Class) {
+            return (Class<?>) o;
+        } else if (o instanceof NativeJavaClass) {
+            return ((NativeJavaClass) o).getClassObject();
+        }
+        throw new IllegalArgumentException(String.format("'%s' is not a CharSequence/Class/NativeJavaClass", o));
     }
 }
