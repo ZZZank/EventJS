@@ -12,11 +12,6 @@ import zank.mods.eventjs.wrapper.ClassConvertible;
 public class EventJSKubeJSPlugin extends KubeJSPlugin {
 
     @Override
-    public void addTypeWrappers(ScriptType type, TypeWrappers typeWrappers) {
-        typeWrappers.register(ClassConvertible.class, ClassConvertible::of);
-    }
-
-    @Override
     public void addBindings(BindingsEvent event) {
         event.add("NativeEvents", SidedNativeEvents.byType(event.type));
     }

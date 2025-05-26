@@ -9,35 +9,17 @@ import java.util.function.Supplier;
  */
 public interface ClassConvertible extends Supplier<Class<?>> {
 
-    static void youDontNeedToLoadThisClassSinceIProvidedTypeWrappersForYou() {}
-
-    static ClassConvertible fromRaw(Class<?> raw) {
-        return () -> raw;
-    }
-
-    static ClassConvertible fromJS(NativeJavaClass njc) {
-        return njc::getClassObject;
-    }
-
-    static ClassConvertible fromName(String className) {
-        return () -> {
+    static Class<?> of(Object o) {
+        if (o instanceof CharSequence) {
             try {
-                return Class.forName(className);
+                return Class.forName(o.toString());
             } catch (ClassNotFoundException e) {
                 throw new RuntimeException(e);
             }
-        };
-    }
-
-    static ClassConvertible of(Object o) {
-        if (o instanceof ClassConvertible) {
-            return (ClassConvertible) o;
-        } else if (o instanceof CharSequence) {
-            return fromName(o.toString());
         } else if (o instanceof Class) {
-            return fromRaw((Class) o);
+            return (Class<?>) o;
         } else if (o instanceof NativeJavaClass) {
-            return fromJS((NativeJavaClass) o);
+            return ((NativeJavaClass) o).getClassObject();
         }
         return null;
     }
