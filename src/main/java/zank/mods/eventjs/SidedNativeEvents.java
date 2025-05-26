@@ -7,7 +7,6 @@ import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.GenericEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
-import zank.mods.eventjs.wrapper.ClassConvertible;
 
 import javax.annotation.Nonnull;
 import java.util.*;
@@ -56,16 +55,17 @@ public final class SidedNativeEvents {
         if (!Event.class.isAssignableFrom(eventType)) {
             throw new IllegalArgumentException(String.format("Event class must be a subclass of '%s'", Event.class));
         }
-        onEventTyped(priority, receiveCancelled, eventType, handler);
+        onEventTyped(priority, receiveCancelled, EventBusSelector.AUTO, eventType, handler);
     }
 
     public <T extends Event> void onEventTyped(
         EventPriority priority,
         boolean receiveCancelled,
+        EventBusSelector busSelector,
         Class<T> eventType,
         Consumer<T> handler
     ) {
-        val packed = new PackedHandler<>(EventJSMod.selectBus(eventType), handler);
+        val packed = new PackedHandler<>(busSelector.selectBus(eventType), handler);
         packedHandlers.add(packed);
         packed.bus.addListener(priority, receiveCancelled, eventType, packed);
     }
@@ -88,17 +88,18 @@ public final class SidedNativeEvents {
         if (!GenericEvent.class.isAssignableFrom(eventType)) {
             throw new IllegalArgumentException(String.format("Event class must be a subclass of '%s'", GenericEvent.class));
         }
-        onGenericEventTyped(genericClassFilter, priority, receiveCancelled, eventType, handler);
+        onGenericEventTyped(genericClassFilter, priority, receiveCancelled, EventBusSelector.AUTO, eventType, handler);
     }
 
     public <T extends GenericEvent<? extends F>, F> void onGenericEventTyped(
         Class<F> genericClassFilter,
         EventPriority priority,
         boolean receiveCancelled,
+        EventBusSelector busSelector,
         Class<T> eventType,
         Consumer<T> handler
     ) {
-        val packed = new PackedHandler<>(EventJSMod.selectBus(eventType), handler);
+        val packed = new PackedHandler<>(busSelector.selectBus(eventType), handler);
         packedHandlers.add(packed);
         packed.bus.addGenericListener(genericClassFilter, priority, receiveCancelled, eventType, packed);
     }
