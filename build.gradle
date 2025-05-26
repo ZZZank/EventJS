@@ -114,6 +114,7 @@ dependencies {
 
 //    modApi("dev.latvian.mods:kubejs-forge:${kubejs_version}")
     modApi("curse.maven:kubejs-238086:3647098")
+    modApi("curse.maven:rhino-416294:3525704")
 
     // in this example, we'll be adding JEI as a dependency
     // according to their developer example on GitHub
