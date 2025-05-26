@@ -43,17 +43,16 @@ public final class SidedNativeEvents {
         packedHandlers.clear();
     }
 
-    public void onEvent(final ClassConvertible type, final Consumer<Event> handler) {
+    public <T extends Event> void onEvent(Class<T> type, Consumer<T> handler) {
         onEvent(EventPriority.NORMAL, false, type, handler);
     }
 
-    public void onEvent(
-        final EventPriority priority,
-        final boolean receiveCancelled,
-        final ClassConvertible type,
-        final Consumer<Event> handler
+    public <T extends Event> void onEvent(
+        EventPriority priority,
+        boolean receiveCancelled,
+        Class<T> eventType,
+        Consumer<T> handler
     ) {
-        val eventType = (Class<Event>) type.get();
         if (!Event.class.isAssignableFrom(eventType)) {
             throw new IllegalArgumentException(String.format("Event class must be a subclass of '%s'", Event.class));
         }
@@ -71,26 +70,25 @@ public final class SidedNativeEvents {
         packed.bus.addListener(priority, receiveCancelled, eventType, packed);
     }
 
-    public void onGenericEvent(
-        final ClassConvertible genericClassFilter,
-        final ClassConvertible type,
-        final Consumer<GenericEvent> handler
+    public <F, T extends GenericEvent<? extends F>> void onGenericEvent(
+        final Class<F> genericClassFilter,
+        final Class<T> eventType,
+        final Consumer<T> handler
     ) {
-        onGenericEvent(genericClassFilter, EventPriority.NORMAL, false, type, handler);
+        onGenericEvent(genericClassFilter, EventPriority.NORMAL, false, eventType, handler);
     }
 
-    public void onGenericEvent(
-        final ClassConvertible genericClassFilter,
+    public <F, T extends GenericEvent<? extends F>> void onGenericEvent(
+        final Class<F> genericClassFilter,
         final EventPriority priority,
         final boolean receiveCancelled,
-        final ClassConvertible type,
-        final Consumer<GenericEvent> handler
+        final Class<T> eventType,
+        final Consumer<T> handler
     ) {
-        val eventType = (Class<GenericEvent>) type.get();
         if (!GenericEvent.class.isAssignableFrom(eventType)) {
             throw new IllegalArgumentException(String.format("Event class must be a subclass of '%s'", GenericEvent.class));
         }
-        onGenericEventTyped(genericClassFilter.get(), priority, receiveCancelled, eventType, handler);
+        onGenericEventTyped(genericClassFilter, priority, receiveCancelled, eventType, handler);
     }
 
     public <T extends GenericEvent<? extends F>, F> void onGenericEventTyped(

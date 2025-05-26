@@ -19,7 +19,7 @@ public abstract class MixinForgeEventWrapper {
     @Inject(method = "onEvent", at = @At("HEAD"), cancellable = true)
     public void ejs$captureHandler(Object eventClass, ForgeEventConsumer consumer, CallbackInfoReturnable<Object> cir) {
         try {
-            SidedNativeEvents.STARTUP.onEvent(ClassConvertible.of(eventClass), consumer::accept);
+            SidedNativeEvents.STARTUP.onEvent((Class) ClassConvertible.of(eventClass), consumer);
         } catch (Exception ex) {
             throw new RuntimeException(ex);
         }
@@ -35,9 +35,9 @@ public abstract class MixinForgeEventWrapper {
     ) {
         try {
             SidedNativeEvents.STARTUP.onGenericEvent(
-                ClassConvertible.of(eventClass),
-                ClassConvertible.of(genericClass),
-                consumer::accept
+                (Class) ClassConvertible.of(eventClass),
+                (Class) ClassConvertible.of(genericClass),
+                consumer
             );
         } catch (Exception ex) {
             throw new RuntimeException(ex);
