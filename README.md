@@ -31,11 +31,11 @@ The `handler` in JS side, is a callback that receives the event, for example: `(
 The `eventType` and `genericClassType` is something that can represent a class, like a string that holds the event class name, or the event class itself loaded by `java(...)` or `Java.loadClass(...)`.
 
 ```typescript
-let handler: (event: AnyForgeEvent) => void
-let eventType: string | Class
+let handler           : (event: AnyForgeEvent) => void
+let eventType         : string | Class
 let genericClassFilter: string | Class
-let priority: $EventPriority | "highest" | "high" | "normal" | "low" | "lowest"
-let receiveCancelled: boolean
+let priority          : $EventPriority | "highest" | "high" | "normal" | "low" | "lowest"
+let receiveCancelled  : boolean
 ```
 
 ### Changes in 1.4.0
@@ -43,7 +43,7 @@ let receiveCancelled: boolean
 In EventJS 1.4.0, in order to support [ProbeJS Legacy](https://www.curseforge.com/minecraft/mc-mods/probejs-legacy) out of the box, the `eventType` and `genericClassFilter` will only actively support `Class` loaded via `java(...)` (1.16.5) or `Java.loadClass(...)` (1.20.1).
 
 ```typescript
-let eventType: Class
+let eventType         : Class
 let genericClassFilter: Class
 ```
 
