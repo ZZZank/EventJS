@@ -85,9 +85,6 @@ public final class SidedNativeEvents {
         final Class<T> eventType,
         final Consumer<T> handler
     ) {
-        if (!GenericEvent.class.isAssignableFrom(eventType)) {
-            throw new IllegalArgumentException(String.format("Event class must be a subclass of '%s'", GenericEvent.class));
-        }
         onGenericEventTyped(genericClassFilter, priority, receiveCancelled, EventBusSelector.AUTO, eventType, handler);
     }
 
