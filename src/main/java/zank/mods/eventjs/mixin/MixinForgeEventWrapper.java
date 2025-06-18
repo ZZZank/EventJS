@@ -35,8 +35,8 @@ public abstract class MixinForgeEventWrapper {
     ) {
         try {
             SidedNativeEvents.STARTUP.onGenericEvent(
-                (Class) EventJSMod.ofClass(eventClass),
                 (Class) EventJSMod.ofClass(genericClass),
+                (Class) EventJSMod.ofClass(eventClass),
                 consumer
             );
         } catch (Exception ex) {
